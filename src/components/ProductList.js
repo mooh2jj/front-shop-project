@@ -24,11 +24,26 @@ const ProductList = () => {
   };
 
   const handleDelete = async (id) => {
-    deleteOne(id).then((res) => {
-      console.log(res);
-      alert("삭제 완료!");
-      setRefresh((prev) => !prev);
-    });
+    // deleteOne(id).then((res) => {
+    //   console.log(res);
+    //   alert("삭제 완료!");
+    //   setRefresh((prev) => !prev);
+    // });
+    // fetch async & await
+    try {
+      const response = await fetch(`http://localhost:8083/api/products/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("삭제 완료");
+        setRefresh((prev) => !prev);
+      } else {
+        alert("삭제 실패");
+      }
+    } catch (error) {
+      throw new Error("상품 삭제 중 오류 발생: " + error.message);
+    }
   };
 
   return (
