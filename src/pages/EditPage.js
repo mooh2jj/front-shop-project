@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteOne, getOne, update } from "../api/productApi";
 import Navigation from "../layouts/Navigation";
@@ -6,6 +6,10 @@ import Navigation from "../layouts/Navigation";
 const EditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const titleRef = useRef(null);
+  const priceRef = useRef(null);
+  const descriptionRef = useRef(null);
 
   const [product, setProduct] = useState({
     id: 0,
@@ -26,6 +30,29 @@ const EditPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const title = titleRef.current.value;
+    const price = priceRef.current.value;
+    const description = descriptionRef.current.value;
+
+    if (title === "" || title.length === 0) {
+      alert("빈칸을 채워주세요!");
+      // 다시 입력하도록 포커스 이동
+      titleRef.current.focus();
+      return;
+    }
+
+    if (price === "" || price.length === 0) {
+      alert("빈칸을 채워주세요!");
+      priceRef.current.focus();
+      return;
+    }
+
+    if (description === "" || description.length === 0) {
+      alert("빈칸을 채워주세요!");
+      descriptionRef.current.focus();
+      return;
+    }
+
     update(id, product).then((res) => {
       console.log(res);
       alert("수정 완료");
@@ -54,6 +81,7 @@ const EditPage = () => {
 
       <form onSubmit={handleSubmit}>
         <input
+          ref={titleRef}
           type="text"
           name="title"
           value={product.title}
@@ -61,6 +89,7 @@ const EditPage = () => {
         />{" "}
         <br />
         <input
+          ref={priceRef}
           type="number"
           name="price"
           value={product.price}
@@ -68,6 +97,7 @@ const EditPage = () => {
         />{" "}
         <br />
         <input
+          ref={descriptionRef}
           type="text"
           name="description"
           value={product.description}

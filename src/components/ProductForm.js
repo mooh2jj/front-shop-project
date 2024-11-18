@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { create } from "../api/productApi";
-import { useDispatch } from "react-redux";
-import { createProduct, postProduct } from "../slices/productSlice";
 
 const initProduct = {
   title: "",
@@ -18,6 +16,10 @@ const ProductForm = () => {
 
   const navigate = useNavigate();
 
+  const titleRef = useRef();
+  const priceRef = useRef();
+  const descriptionRef = useRef();
+
   //   const addProduct = (param) => {
   //     dispatch(postProduct(param));
   //   };
@@ -25,6 +27,30 @@ const ProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // addProduct(product);
+
+    const title = titleRef.current.value;
+    const price = priceRef.current.value;
+    const description = descriptionRef.current.value;
+
+    if (title === "" || title.length === 0) {
+      alert("빈칸을 채워주세요!");
+      // 다시 입력하도록 포커스 이동
+      titleRef.current.focus();
+      return;
+    }
+
+    if (price === "" || price.length === 0) {
+      alert("빈칸을 채워주세요!");
+      priceRef.current.focus();
+      return;
+    }
+
+    if (description === "" || description.length === 0) {
+      alert("빈칸을 채워주세요!");
+      descriptionRef.current.focus();
+      return;
+    }
+
     create(product)
       .then((res) => {
         alert("등록 완료");
@@ -44,6 +70,7 @@ const ProductForm = () => {
       <form onSubmit={handleSubmit}>
         제목:{" "}
         <input
+          ref={titleRef}
           type="text"
           placeholder="상품 제목"
           onChange={handleChange}
@@ -53,6 +80,7 @@ const ProductForm = () => {
         <br />
         가격:{" "}
         <input
+          ref={priceRef}
           type="number"
           placeholder="상품 가격"
           onChange={handleChange}
@@ -62,6 +90,7 @@ const ProductForm = () => {
         <br />
         설명:{" "}
         <input
+          ref={descriptionRef}
           type="text"
           placeholder="상품 설명"
           onChange={handleChange}
