@@ -17,10 +17,14 @@ const ProductList = () => {
 
   // fetch async & await
   const fetchProducts = async () => {
-    const data = await fetch("http://localhost:8083/api/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.log(err));
+    const response = await fetch("http://localhost:8083/api/products");
+    const data = await response.json();
+
+    if (response.ok) {
+      setProducts(data);
+    } else {
+      throw new Error("상품 목록 불러오기 실패");
+    }
   };
 
   const handleDelete = async (id) => {
