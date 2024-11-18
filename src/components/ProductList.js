@@ -7,12 +7,21 @@ const ProductList = () => {
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    getList()
-      .then((data) => {
-        setProducts(data);
-      })
-      .catch((err) => console.log(err));
+    // getList()
+    //   .then((data) => {
+    //     setProducts(data);
+    //   })
+    //   .catch((err) => console.log(err));
+    fetchProducts();
   }, [refresh]); // refresh 상태가 변경될 때마다 실행
+
+  // fetch async & await
+  const fetchProducts = async () => {
+    const data = await fetch("http://localhost:8083/api/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.log(err));
+  };
 
   const handleDelete = async (id) => {
     deleteOne(id).then((res) => {
@@ -24,11 +33,24 @@ const ProductList = () => {
 
   return (
     <>
-      <ul>
-        {products.map((product) => (
-          <ProductItem key={product.id} {...product} onDelete={handleDelete} />
-        ))}
-      </ul>
+      <div>
+        <ul
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: "10px",
+            gap: "10px",
+          }}
+        >
+          {products.map((product) => (
+            <ProductItem
+              key={product.id}
+              {...product}
+              onDelete={handleDelete}
+            />
+          ))}
+        </ul>
+      </div>
     </>
   );
 };

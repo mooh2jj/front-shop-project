@@ -24,13 +24,21 @@ const ProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // addProduct(product);
-    create(product)
-      .then((res) => {
-        alert("등록 완료");
-        navigate("/");
-      })
-      .catch((err) => console.log(err));
+    // axios
+    // create(product)
+    //   .then((res) => {
+    //     alert("등록 완료");
+    //     navigate("/");
+    //   })
+    //   .catch((err) => console.log(err));
+    try {
+      await create(product);
+      alert("등록 완료");
+      navigate("/");
+    } catch (error) {
+      console.error("상품 등록 실패:", error);
+      alert("등록 실패");
+    }
   };
 
   const handleChange = (e) => {
