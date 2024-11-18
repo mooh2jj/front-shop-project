@@ -4,14 +4,9 @@ import { deleteOne, getOne } from "../api/productApi";
 const ProductItem = ({ id, title, imgsrc, price, description, onDelete }) => {
   // const navigate = useNavigate();
 
-  const handleDelete = async (e) => {
+  const handleDelete = (e) => {
     e.preventDefault();
-    try {
-      await onDelete(id);
-      alert("삭제 완료!");
-    } catch (err) {
-      console.log(err);
-    }
+    onDelete(id);
   };
 
   return (
