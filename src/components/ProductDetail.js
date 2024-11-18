@@ -17,13 +17,17 @@ const ProductDetail = ({ id }) => {
   }, [id]);
 
   const fetchProduct = async () => {
-    const response = await fetch(`http://localhost:8083/api/products/${id}`);
-    const data = await response.json();
+    try {
+      const response = await fetch(`http://localhost:8083/api/products/${id}`);
+      const data = await response.json();
 
-    if (response.ok) {
-      setProduct(data);
-    } else {
-      throw new Error("상품 상세 불러오기 실패");
+      if (response.ok) {
+        setProduct(data);
+      } else {
+        alert("상품 상세 불러오기 실패");
+      }
+    } catch (error) {
+      throw new Error("상품 상세 불러오기 중 오류 발생: " + error.message);
     }
   };
 
