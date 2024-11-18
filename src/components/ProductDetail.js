@@ -6,12 +6,22 @@ const ProductDetail = ({ id }) => {
   const [product, setProduct] = useState({});
 
   useEffect(() => {
-    getOne(id).then((res) => {
-      console.log(res);
+    // getOne(id).then((res) => {
+    //   console.log(res);
 
-      setProduct(res);
-    });
+    //   setProduct(res);
+    // });
+
+    // fetch async & await
+    fetchProduct();
   }, [id]);
+
+  const fetchProduct = async () => {
+    const data = await fetch(`http://localhost:8083/api/products/${id}`)
+      .then((res) => res.json())
+      .then((data) => setProduct(data))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>

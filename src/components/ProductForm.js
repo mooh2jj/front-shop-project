@@ -32,12 +32,20 @@ const ProductForm = () => {
     //   })
     //   .catch((err) => console.log(err));
     try {
-      await create(product);
-      alert("등록 완료");
-      navigate("/");
+      const response = await fetch("http://localhost:8083/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+
+      if (response.ok) {
+        alert("등록 완료");
+        navigate("/");
+      } else {
+        alert("등록 실패");
+      }
     } catch (error) {
-      console.error("상품 등록 실패:", error);
-      alert("등록 실패");
+      throw new Error("상품 등록 중 오류 발생: " + error.message);
     }
   };
 

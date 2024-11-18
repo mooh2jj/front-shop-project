@@ -24,22 +24,55 @@ const EditPage = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    update(id, product).then((res) => {
-      console.log(res);
-      alert("수정 완료");
-      navigate("/");
-    });
+    // update(id, product).then((res) => {
+    //   console.log(res);
+    //   alert("수정 완료");
+    //   navigate("/");
+    // });
+    // fetch async & await
+    try {
+      const response = await fetch(`http://localhost:8083/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+
+      if (response.ok) {
+        alert("수정 완료");
+        navigate("/");
+      } else {
+        alert("수정 실패");
+      }
+    } catch (error) {
+      throw new Error("상품 수정 중 오류 발생: " + error.message);
+    }
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
-    deleteOne(id).then((res) => {
-      console.log(res);
-      alert("삭제 완료!");
-      navigate("/");
-    });
+    // deleteOne(id).then((res) => {
+    //   console.log(res);
+    //   alert("삭제 완료!");
+    //   navigate("/");
+    // });
+
+    // fetch async & await
+    try {
+      const response = await fetch(`http://localhost:8083/api/products/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("삭제 완료");
+        navigate("/");
+      } else {
+        alert("삭제 실패");
+      }
+    } catch (error) {
+      throw new Error("상품 삭제 중 오류 발생: " + error.message);
+    }
   };
 
   const handleChange = (e) => {
