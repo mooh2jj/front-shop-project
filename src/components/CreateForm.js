@@ -9,7 +9,7 @@ const initProduct = {
   imgsrc: "https://via.placeholder.com/150",
 };
 
-const ProductForm = () => {
+const CreateForm = () => {
   const [product, setProduct] = useState(initProduct);
 
   //   const dispatch = useDispatch();
@@ -104,4 +104,4 @@ const ProductForm = () => {
   );
 };
 
-export default ProductForm;
+export default CreateForm;
