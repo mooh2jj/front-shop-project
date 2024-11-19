@@ -11,7 +11,21 @@ const ProductList = () => {
       .then((data) => {
         setProducts(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.code === "ECONNABORTED") {
+          alert("서버 응답시간이 초과되었습니다. 잠시 후 다시 시도해주세요.");
+        } else if (err.response) {
+          console.log(err.response.status);
+          console.log(err.response.data);
+          alert(err.response.data.message);
+        } else if (err.request) {
+          console.log(err.message);
+          alert("요청 패킷 에러");
+        } else {
+          console.log(err.message);
+          alert("알 수 없는 에러가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        }
+      });
   }, [refresh]); // refresh 상태가 변경될 때마다 실행
 
   const handleDelete = async (id) => {
